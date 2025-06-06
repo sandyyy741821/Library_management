@@ -1,0 +1,94 @@
+name: CICD_PR
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+  pull_request_target:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        formfactor:
+          - name: mobile
+            width: 414
+            height: 736
+            preset: "desktop"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Find project directory with package.json
+        id: find_dir
+        run: |
+          PROJECT_DIR=$(find . -name package.json -exec dirname {} \; | head -n 1)
+          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+          echo "Found project directory: $PROJECT_DIR"
+
+      - name: Install Lighthouse CI and Dependencies
+        run: |
+          cd ${{ env.PROJECT_DIR }}
+          npm install -g @lhci/cli
+          npm install
+
+      - name: Build React App
+        run: |
+          cd ${{ env.PROJECT_DIR }}
+          export NODE_OPTIONS=--openssl-legacy-provider
+          SKIP_PREFLIGHT_CHECK=true npm run build
+
+      - name: Create Lighthouse CI Config
+        run: |
+          cd ${{ env.PROJECT_DIR }}
+          cat << EOF > .lighthouserc.${{ matrix.formfactor.name }}.json
+          {
+            "ci": {
+              "collect": {
+                "numberOfRuns": 3,
+                "url": ["http://localhost:3000"],
+                "settings": {
+                  "preset": "${{ matrix.formfactor.preset }}",
+                  "emulatedFormFactor": "${{ matrix.formfactor.name }}",
+                  "screenEmulation": {
+                    "mobile": false,
+                    "width": ${{ matrix.formfactor.width }},
+                    "height": ${{ matrix.formfactor.height }},
+                    "deviceScaleFactor": 1,
+                    "disabled": false
+                  },
+                  "throttlingMethod": "simulate"
+                }
+              },
+              "upload": {
+                "target": "filesystem",
+                "outputDir": "./lhci-report-${{ matrix.formfactor.name }}"
+              }
+            }
+          }
+          EOF
+
+      - name: Install Static Server and Wait-On
+        run: |
+          cd ${{ env.PROJECT_DIR }}
+          npm install -g serve wait-on
+
+      - name: Run Lighthouse Audit
+        run: |
+          cd ${{ env.PROJECT_DIR }}
+          serve -s build -l 3000 &  # Start static server
+          npx wait-on http://localhost:3000
+          sleep 15
+          lhci autorun --config .lighthouserc.${{ matrix.formfactor.name }}.json
+        env:
+          PORT: 3000
+
+
+      - name: Upload LHCI Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-report-${{ matrix.formfactor.name }}
+          path: ${{ env.PROJECT_DIR }}/lhci-report-${{ matrix.formfactor.name }}

@@ -1,0 +1,14 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+#root {
+    justify-content: center;
+    align-items: center;
+    background-image: url('/b.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 20px 10px;
+    min-height: 100vh; 
+}

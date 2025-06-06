@@ -1,0 +1,65 @@
+.BookDetail{
+    margin: 3% 33%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    padding: 60px 40px;
+    border-radius: 12px;
+    border: 0.5px solid rgb(120, 120, 120);
+    color: rgb(0, 0, 0);
+    width: 30%;
+    background-color: rgb(123, 171, 171);
+    position: relative;
+}
+
+
+.BookDetail h3{
+    font-size: 2rem;
+    margin: 20px;
+    text-align: center;
+}
+
+.BookDetail .cancel{
+    font-size: 1.5rem;
+    background-color: rgb(0, 58, 27);
+    padding: 10px 20px;
+    color: aliceblue;
+    border-radius: 10px;
+    margin-left: 70%;
+    
+}
+.BookDetail p{
+    font-size: 2rem;
+}
+
+.BookDetail button:hover{
+    background-color: rgb(114, 194, 134);
+    color: black;
+}
+
+.BookDetail img{
+    width: 40%; 
+    height: auto; 
+    border-radius: 10px; 
+    transition: transform 0.2s ease-in-out;
+    margin-left: 29%;
+}
+.BookDetail img:hover{
+    transform: scale(1.1);
+  }
+.BookDetail form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 80px;
+}
+.BookDetail label{
+    text-align: center;
+    margin-right: 20px;
+    font-size: 1.5rem;
+}
+.BookDetail input{
+    padding: 10px 50px;
+    display: flex;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-left: 30%;
+}

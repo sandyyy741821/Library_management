@@ -1,0 +1,31 @@
+.Search-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Search-div form{
+    margin-top: 5%;
+    font-size: 3rem;
+}
+
+.Search-div input{
+    font-size: 1.2rem;
+    padding: 10px;
+    width: 500px;
+    text-align: center;
+    border-radius: 20px;
+    border: 0.1px solid blue;
+}
+.Search-div button{
+    padding: 5px 20px;
+    margin: 10px;
+    font-size: 1rem;
+    background-color: rgb(97, 96, 94);
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+.Search-div button:hover{
+    background-color: rgb(233, 231, 231);
+    color: black;
+}
