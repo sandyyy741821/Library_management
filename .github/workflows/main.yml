@@ -51,7 +51,7 @@ jobs:
             "ci": {
               "collect": {
                 "numberOfRuns": 3,
-                "url": ["http://localhost:3000"],
+                "url": ["http://localhost:5173"],
                 "settings": {
                   "preset": "${{ matrix.formfactor.preset }}",
                   "emulatedFormFactor": "${{ matrix.formfactor.name }}",
@@ -81,12 +81,12 @@ jobs:
       - name: Run Lighthouse Audit
         run: |
           cd ${{ env.PROJECT_DIR }}
-          serve -s build -l 3000 &  # Start static server
-          npx wait-on http://localhost:3000
-          sleep 15
+          serve -s build -l 5173 &  # Start static server
+          npx wait-on http://localhost:5173
+          sleep 2
           lhci autorun --config .lighthouserc.${{ matrix.formfactor.name }}.json
         env:
-          PORT: 3000
+          PORT: 5173
 
 
       - name: Upload LHCI Report as Artifact
