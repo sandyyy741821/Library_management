@@ -1,25 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
   server: {
+    open: true,
+    // 👇 Fallback to index.html for all unknown routes
     fs: {
-      allow: ['.'],
+      strict: false,
     },
-  },
-  build: {
-    outDir: 'dist',
-  },
-  // 👇 This handles SPA routing (very important!)
-  base: '/',
-  preview: {
-    port: 5173,
+    historyApiFallback: true, // for react-router-dom to work properly
   },
 })
