@@ -34,6 +34,8 @@ jobs:
           cd ${{ env.PROJECT_DIR }}
           npm install -g @lhci/cli
           npm install
+          npm install axios
+
 
       - name: Build React App
         run: |
